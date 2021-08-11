@@ -1,0 +1,25 @@
+# Rutas del sistema
+# Autor: Esteban Aquino
+# Fecha: 27/07/2020
+
+Options +FollowSymLinks
+RewriteEngine on
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteRule ^app$ app/index.php
+RewriteRule ^test$ back/config/testconection.php
+RewriteRule ^mytest$ back/config/mytest.php
+RewriteRule ^apitest$ back/api/apitest.php
+
+#PAGINAS
+RewriteRule ^home$ principal.php
+RewriteRule ^login$ index.php
+
+#API
+RewriteRule ^api/([0-9a-zA-Z-]+)$ api.php?SERV=$1 [QSA]
+RewriteRule ^api/([0-9a-zA-Z-]+)/([0-9]+)$ api.php?SERV=$1&ID=$2
+#RewriteRule ^api/([0-9a-zA-Z-]+)/([0-9a-zA-Z-]+)$ api.php?SERV=$1&TXT=$2
+#RewriteRule ^api/([0-9a-zA-Z-]+)/([0-9a-zA-Z-]+)/([0-9]+)$ api.php?SERV=$1&ID=$2
+RewriteRule ^validar$ back/api/validarUsuario.php
+
+
