@@ -2,13 +2,16 @@
 
 $config_path = 'back/config/';
 $shared_path = 'back/shared/';
-$api_path = 'back/api/';
+$api_path = 'back/controller/';
+$model_path = 'back/model/';
+
 require $config_path . 'parametros.php';
 require $config_path . 'myconnect.php';
 require $shared_path . 'php-jwt-master/src/JWT.php';
 require $shared_path . 'util.php';
 require $shared_path . 'http_response_code.php';
 require $shared_path . 'sharedFunctions.php';
+require $model_path .  'Response.php';
 
 $metodo = filter_input(INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_STRING);
 $SERV = filter_input(INPUT_GET, 'SERV', FILTER_SANITIZE_STRING);

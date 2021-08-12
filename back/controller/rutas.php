@@ -10,6 +10,8 @@ switch ($SERV) {
     case 'clubes':
         if ($metodo === 'POST' || $metodo === 'DELETE' || $metodo === 'PUT' || $metodo === 'GET'){
             require_once $api_path . 'clubes/CLUBES.php';
+        } else {
+            require_once $api_path.'metodoNoEncontrado.php';
         }
         break;
     default:

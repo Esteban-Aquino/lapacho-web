@@ -47,8 +47,14 @@ function formatea_respuesta($acceso, $datos, $mensaje, $res_code, $newToken) {
     return json_encode($respuesta);
 }
 
-function agrega_cabecera_json() {
-    header("Content-type: application/json");
+function agrega_cabecera_json($to_cache = false) {
+
+    header('Content-type: application/json; charset=utf-8');
+        if ($to_cache == true) {
+            header('Cache-control: max-age=15');
+        } else {
+            header('Cache-control: no-cache, no-store');
+        }
     header('Access-Control-Allow-Origin: *');
     header('Access-Control-Allow-Headers: *');
 }

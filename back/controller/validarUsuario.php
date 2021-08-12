@@ -4,9 +4,7 @@
  * Validar Usuario
  * Esteban Aquino 30/09/2019
  */
-/*require_once '../DAO/auth.php';
-require_once '../shared/sharedFunctions.php';
-require_once '../shared/http_response_code.php';*/
+
 require_once './back/DAO/auth.php';
 
 $acceso = false;
@@ -14,6 +12,7 @@ $datos = [];
 $mensaje = "";
 $res_code = StatusCodes::HTTP_OK;
 $decoded = "";
+$response = new Response();
 
 // Verificar autenticidad del token
 if (VERIFICA_TOKEN) {
@@ -51,13 +50,20 @@ if (!$ok) {
         $auth = auth::ValidarUsuario($usuario, $clave);
         //print_r($auth);
         if ($auth != null) {
-            $ok = true;
-            $token = generaToken($auth);
-            $nombre = $auth[0]['NOMBRE'];
-            $datos['usuario'] = $usuario;
-            $datos['nombre'] = $nombre;
-            $acceso = true;
-            //print_r($datos);
+            if (is_array($auth)) {
+                $ok = true;
+                $token = generaToken($auth);
+                $nombre = $auth[0]['NOMBRE'];
+                $datos['usuario'] = $usuario;
+                $datos['nombre'] = $nombre;
+                $acceso = true;
+                //print_r($datos);
+            } else {
+                $token = '';
+                $acceso = false;
+                $mensaje = formatea_error($auth);
+                $res_code = StatusCodes::HTTP_INTERNAL_SERVER_ERROR;
+            }
             
         }
     }
@@ -66,11 +72,17 @@ if (!$ok) {
     //$respuesta["datos_usuario"] = null;
     $token = '';
     $acceso = false;
-    $res_code = StatusCodes::HTTP_UNAUTHORIZED;
+    if ($res_code === StatusCodes::HTTP_OK) {
+        $res_code = StatusCodes::HTTP_UNAUTHORIZED;
+    }
 } else {
     $acceso = true;
 }
 
-
-print formatea_respuesta($acceso, $datos, $mensaje, $res_code, $token);
+    $response->setAccess($acceso);
+    $response->addMessage($mensaje);
+    $response->setHttpStatusCode($res_code);
+    $response->setData($datos);
+    $response->setToken($token);
+    $response->send();
 ?>
