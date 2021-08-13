@@ -12,6 +12,9 @@ require $shared_path . 'util.php';
 require $shared_path . 'http_response_code.php';
 require $shared_path . 'sharedFunctions.php';
 require $model_path .  'Response.php';
+require $model_path .  'Token.php';
+
+$response = new Response();
 
 $metodo = filter_input(INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_STRING);
 $SERV = filter_input(INPUT_GET, 'SERV', FILTER_SANITIZE_STRING);
@@ -20,36 +23,20 @@ if ($SERV === 'validar') {
     require_once $api_path . 'validarUsuario.php';
 } else {
     $acceso = false;
-    $datos = "";
-    $mensaje = "";
-    $res_code = StatusCodes::HTTP_OK;
-    $decoded = "";
-
     // Verificar autenticidad del token
-    if (VERIFICA_TOKEN) {
-        $head = getallheaders();
-        $token = $head['token'];
-        //print $token;
-        if (nvl($token, 'NN') != 'NN') {
-            $decoded = validarToken($token);
-            //print_r($decoded);
-            $ok = $decoded['valid'];
+    $head = getallheaders();
+    $token = $head['token'];
+    $ok = Token::validarToken($token);
 
-            if ($ok) {
-                $token = $decoded['TOKEN'];
-            }
-        }
-    } else {
-        $ok = true;
-    }
     if ($ok) {
         $acceso = true;
         require_once $api_path . 'rutas.php';
     } else {
-        $token = '';
-        $acceso = false;
-        $mensaje = 'Acceso no autorizado';
-        $res_code = StatusCodes::HTTP_UNAUTHORIZED;
-        print formatea_respuesta($acceso, $datos, $mensaje, $res_code, $token);
+        $response->setAccess(false);
+        $response->addMessage('Acceso no autorizado');
+        $response->setHttpStatusCode(StatusCodes::HTTP_UNAUTHORIZED);
+        $response->setData('');
+        $response->setToken('');
+        $response->send();
     }
 }

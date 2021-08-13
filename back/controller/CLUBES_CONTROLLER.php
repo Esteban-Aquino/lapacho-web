@@ -31,7 +31,12 @@ switch ($metodo) {
                 $mensaje = $resp;
             }
         }
-        print formatea_respuesta($acceso, $datos, $mensaje, $res_code, $token);
+        $response->setAccess(Token::getAccess());
+        $response->addMessage($mensaje);
+        $response->setHttpStatusCode($res_code);
+        $response->setData($datos);
+        $response->setToken(Token::getToken());
+        $response->send();
         break;
     case 'GET': // CONSULTAR
         $BUSCAR = NVL(filter_input(INPUT_GET, 'BUSCAR', FILTER_SANITIZE_STRING), '');
@@ -53,7 +58,12 @@ switch ($metodo) {
             $res_code = StatusCodes::HTTP_INTERNAL_SERVER_ERROR;
             $mensaje = formatea_error($data);
         }
-        print formatea_respuesta($acceso, $datos, $mensaje, $res_code, $token);
+        $response->setAccess(Token::getAccess());
+        $response->addMessage($mensaje);
+        $response->setHttpStatusCode($res_code);
+        $response->setData($datos);
+        $response->setToken(Token::getToken());
+        $response->send();
         break;
     case 'PUT':
         # Capturar post JSON
@@ -75,7 +85,12 @@ switch ($metodo) {
             }
         }
 
-        print formatea_respuesta($acceso, $datos, $mensaje, $res_code, $token);
+        $response->setAccess(Token::getAccess());
+        $response->addMessage($mensaje);
+        $response->setHttpStatusCode($res_code);
+        $response->setData($datos);
+        $response->setToken(Token::getToken());
+        $response->send();
         break;
     case 'DELETE':
         $id = filter_input(INPUT_GET, 'ID', FILTER_SANITIZE_NUMBER_INT);
@@ -91,9 +106,15 @@ switch ($metodo) {
             }
         }
 
-        print formatea_respuesta($acceso, $datos, $mensaje, $res_code, $token);
+        $response->setAccess(Token::getAccess());
+        $response->addMessage($mensaje);
+        $response->setHttpStatusCode($res_code);
+        $response->setData($datos);
+        $response->setToken(Token::getToken());
+        $response->send();
         break;
     default:
-        require_once $api_path . 'metodoNoEncontrado.php';
+        $response->sendMethodNotFound();
         break;
 }
+

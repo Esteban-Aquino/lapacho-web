@@ -14,8 +14,6 @@ class Response
         $this->_access = $_access;
     }
 
-
-
     public function setToken($token)
     {
         $this->_token = $token;
@@ -54,4 +52,36 @@ class Response
         http_response_code($this->_httpStatusCode);
         echo json_encode($this->_responseData);
     }
+
+    public function sendMethodNotFound()
+    {
+        agrega_cabecera_json($this->_toCache);
+        $this->_responseData['acceso'] = Token::getAccess();
+        $this->_responseData['datos'] = '';
+        $this->_responseData['token'] = Token::getToken();
+        $this->addMessage('Metodo no admitido');
+        $this->_responseData['mensajes'] = $this->_messages;
+        IF (!HTTP_ERRORS) {
+            $this->_httpStatusCode = StatusCodes::HTTP_OK;
+        }
+        http_response_code(StatusCodes::HTTP_METHOD_NOT_ALLOWED);
+        echo json_encode($this->_responseData);
+    }
+
+    public function sendServiceNotFound()
+    {
+        agrega_cabecera_json($this->_toCache);
+        $this->_responseData['acceso'] = Token::getAccess();
+        $this->_responseData['datos'] = '';
+        $this->_responseData['token'] = Token::getToken();
+        $this->addMessage('No se encuentra servicio solicitado');
+        $this->_responseData['mensajes'] = $this->_messages;
+        IF (!HTTP_ERRORS) {
+            $this->_httpStatusCode = StatusCodes::HTTP_OK;
+        }
+        http_response_code(StatusCodes::HTTP_NOT_FOUND);
+        echo json_encode($this->_responseData);
+    }
+
+    
 }

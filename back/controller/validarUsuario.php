@@ -9,32 +9,7 @@ require_once './back/DAO/auth.php';
 
 $acceso = false;
 $datos = [];
-$mensaje = "";
-$res_code = StatusCodes::HTTP_OK;
-$decoded = "";
-$response = new Response();
-
-// Verificar autenticidad del token
-if (VERIFICA_TOKEN) {
-    $head = getallheaders();
-    $token = $head['token'];
-    //print $token;
-    if (nvl($token,'NN') != 'NN') {
-        $decoded = validarToken($token); 
-        //print_r($decoded);
-        $ok = $decoded['valid'];
-        
-        if ($ok) {
-            
-            $datos['usuario'] = $decoded['decoded']->USUARIO;
-            $datos['nombre'] = $decoded['decoded']->NOMBRE;
-            $token = $decoded['TOKEN'];
-            //print_r($datos);
-        }
-    }
-} else {
-    $ok = true;
-}
+$mensaje = '';
 
 if (!$ok) {
     
@@ -52,10 +27,9 @@ if (!$ok) {
         if ($auth != null) {
             if (is_array($auth)) {
                 $ok = true;
-                $token = generaToken($auth);
-                $nombre = $auth[0]['NOMBRE'];
-                $datos['usuario'] = $usuario;
-                $datos['nombre'] = $nombre;
+                $token = Token::generaToken($auth);
+                $datos['usuario'] = Token::getUsuario();
+                $datos['nombre'] = Token::getNombre();
                 $acceso = true;
                 //print_r($datos);
             } else {
@@ -65,6 +39,8 @@ if (!$ok) {
                 $res_code = StatusCodes::HTTP_INTERNAL_SERVER_ERROR;
             }
             
+        } else {
+            $mensaje = 'Acceso no autorizado. Verifique que su usuario y contraseña sean correctos';
         }
     }
 }
