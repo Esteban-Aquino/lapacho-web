@@ -9,6 +9,11 @@ class Response
     private $_toCache = false;
     private $_responseData = array();
 
+    public function __construct()
+    {
+        
+    }
+
     public function setAccess($_access)
     {
         $this->_access = $_access;

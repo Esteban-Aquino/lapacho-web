@@ -5,7 +5,7 @@
  * Esteban Aquino 30/09/2019
  */
 
-require_once './back/DAO/auth.php';
+require_once DATA_PATH.'/auth.php';
 
 $acceso = false;
 $datos = [];

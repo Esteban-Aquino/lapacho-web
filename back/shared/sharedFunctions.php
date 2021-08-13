@@ -6,61 +6,8 @@
  * Empresa: LeaderIT
  * Fecha: 27/07/2019
  */
-/*use Firebase\JWT\JWT;
 
-function validarToken($token) {
-    $valid = true;
-    $decoded = '';
-    $message = '';
-    $respuesta["valid"] = $valid;
-    $respuesta["decoded"] = $decoded;
-    $respuesta["message"] = $message;
-    
-    try {
-        $decoded = JWT::decode($token, LLAVE_SUPER_SECRETA, array('HS256'));
-    } catch (Exception $e) {
-        $valid = false;
-        $message = $e->getMessage();
-    }
-    // validar vencimiento
-    if ($valid) {
-        //$VENC = strtotime($decoded->VENC);
-        $VENC = date_create_from_format('d/m/Y H:i:s', $decoded->VENC);
-        $HOY = date_create_from_format('d/m/Y H:i:s', date("d/m/Y H:i:s",time()));
-        IF ($HOY < $VENC) {
-           $USUARIO = $decoded->USUARIO;
-           $NOMBRE = $decoded->NOMBRE;
-           $datos[0]['USUARIO'] = $USUARIO;
-           $datos[0]['NOMBRE'] = $NOMBRE;
-           $newToken = generaToken($datos);
-           $respuesta["TOKEN"] = $newToken;
-        } ELSE {
-            //print 'vencido';
-           $valid = FALSE;
-        }
-        
-    }
-    $respuesta["valid"] = $valid;
-    $respuesta["decoded"] = $decoded;
-    $respuesta["message"] = $message;
-    //print_r ($respuesta);
-    //print_r($valido[0]['VALID']);
-    //print_r ($decoded['decoded'][0]->USR_CALL);
 
-    return $respuesta;
-}*/
-/*
-function generaToken($datos) {
-    $time = time(); //Fecha y hora actual en segundos
-    $usuario = $datos[0]['USUARIO'];
-    $nombre = $datos[0]['NOMBRE'];
-    $payload['USUARIO'] = $usuario;
-    $payload['NOMBRE'] = $nombre;
-    $payload['EMI'] = date('d/m/Y H:i:s', $time);
-    $payload['VENC'] =  date('d/m/Y H:i:s', $time + ( HORAS_VALIDEZ_TOKEN * 60 * 60));
-    $token = JWT::encode($payload, LLAVE_SUPER_SECRETA); //CodificaR el Token
-    return $token;
-}*/
 
 
 /**

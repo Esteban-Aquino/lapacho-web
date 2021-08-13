@@ -20,14 +20,12 @@ $ok = false;
 
 
 // Verificar autenticidad del token
-if (VERIFICA_TOKEN) {
-    $token = $head['token'];
-    if ($token !== 'null' && $token !== null) {
-        $ok = validarToken($token)['valid'];
-    }
-} else {
-    $ok = true;
+
+$token = $head['token'];
+if ($token !== 'null' && $token !== null) {
+    $ok = Token::validarToken($token)['valid'];
 }
+
 
 if ($ok) {
     $acceso = true;
@@ -57,4 +55,10 @@ if ($ok) {
     $mensaje = 'Token no valido';
     $datos = '';
 }
-print formatea_respuesta($acceso, $datos, $mensaje, $res_code);
+$response->setAccess(false);
+$response->addMessage($mensaje);
+$response->setHttpStatusCode($res_code);
+$response->setData($datos);
+$response->setToken(Token::getToken());
+$response->send();
+    
