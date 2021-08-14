@@ -47,9 +47,9 @@ class Response
     public function send()
     {
         agrega_cabecera_json($this->_toCache);
-        $this->_responseData['acceso'] = $this->_access;
+        $this->_responseData['acceso'] = nvl($this->_access,false);
         $this->_responseData['datos'] = $this->_data;
-        $this->_responseData['token'] = $this->_token;
+        $this->_responseData['token'] = nvl($this->_token,'');
         $this->_responseData['mensajes'] = $this->_messages;
         IF (!HTTP_ERRORS) {
             $this->_httpStatusCode = StatusCodes::HTTP_OK;
@@ -61,9 +61,9 @@ class Response
     public function sendMethodNotFound()
     {
         agrega_cabecera_json($this->_toCache);
-        $this->_responseData['acceso'] = Token::getAccess();
+        $this->_responseData['acceso'] = nvl(Token::getAccess(),false);
         $this->_responseData['datos'] = '';
-        $this->_responseData['token'] = Token::getToken();
+        $this->_responseData['token'] = nvl(Token::getToken(),'');
         $this->addMessage('Metodo no admitido');
         $this->_responseData['mensajes'] = $this->_messages;
         IF (!HTTP_ERRORS) {
@@ -76,9 +76,9 @@ class Response
     public function sendServiceNotFound()
     {
         agrega_cabecera_json($this->_toCache);
-        $this->_responseData['acceso'] = Token::getAccess();
+        $this->_responseData['acceso'] = nvl(Token::getAccess(),false);
         $this->_responseData['datos'] = '';
-        $this->_responseData['token'] = Token::getToken();
+        $this->_responseData['token'] = nvl(Token::getToken(),'');
         $this->addMessage('No se encuentra servicio solicitado');
         $this->_responseData['mensajes'] = $this->_messages;
         IF (!HTTP_ERRORS) {

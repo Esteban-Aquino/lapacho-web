@@ -1,25 +1,18 @@
 <?php
+    require_once DATA_PATH.'auth.php';
+function loggin() {
+    $response = new Response();
+    $acceso = false;
+    $datos = [];
+    $mensaje = '';
 
-/**
- * Validar Usuario
- * Esteban Aquino 30/09/2019
- */
-
-require_once DATA_PATH.'/auth.php';
-
-$acceso = false;
-$datos = [];
-$mensaje = '';
-
-if (!$ok) {
-    
     # Capturar post JSON
     $json_str = file_get_contents('php://input');
     # Obtener como Array
     $json_obj = json_decode(utf8_converter_sting($json_str), true);
     $usuario = $json_obj['usuario'];
     $clave = $json_obj['clave'];
-    //print $usuario;
+    
     
     if (nvl($usuario,'NN') != 'NN') {
         $auth = auth::ValidarUsuario($usuario, $clave);
@@ -43,22 +36,22 @@ if (!$ok) {
             $mensaje = 'Acceso no autorizado. Verifique que su usuario y contraseña sean correctos';
         }
     }
-}
-if (!$ok) {
-    //$respuesta["datos_usuario"] = null;
-    $token = '';
-    $acceso = false;
-    if ($res_code === StatusCodes::HTTP_OK) {
-        $res_code = StatusCodes::HTTP_UNAUTHORIZED;
+    if (!$ok) {
+        //$respuesta["datos_usuario"] = null;
+        $token = '';
+        $acceso = false;
+        if ($res_code === StatusCodes::HTTP_OK) {
+            $res_code = StatusCodes::HTTP_UNAUTHORIZED;
+        }
+    } else {
+        $acceso = true;
     }
-} else {
-    $acceso = true;
-}
-
+    //echo 'respuesta';
     $response->setAccess($acceso);
     $response->addMessage($mensaje);
     $response->setHttpStatusCode($res_code);
     $response->setData($datos);
     $response->setToken($token);
     $response->send();
-?>
+
+}

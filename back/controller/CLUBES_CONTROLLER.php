@@ -19,7 +19,7 @@ function post() {
     $club = $json_obj;
 
     if (nvl($club, 'NN') != 'NN') {
-        $resp = clientesDB::insertaClub($club);
+        $resp = clubesDB::insertaClub($club);
         if (is_numeric($resp)) {
             $datos['id'] = $resp;
             $mensaje = 'Insertado';
@@ -44,7 +44,7 @@ function get(){
     $BUSCAR = NVL(filter_input(INPUT_GET, 'BUSCAR', FILTER_SANITIZE_STRING), '');
     $id = NVL(filter_input(INPUT_GET, 'ID', FILTER_SANITIZE_STRING), '');
 
-    $data = clientesDB::getClubes($id, $BUSCAR);
+    $data = clubesDB::getClubes($id, $BUSCAR);
 
     if (is_array($data)) {
         $longitud = count($data);
@@ -82,7 +82,7 @@ function put() {
     // Validaciones ???
 
     if (nvl($club, 'NN') != 'NN') {
-        $resp = clientesDB::actualizaClubes($id, $club);
+        $resp = clubesDB::actualizaClubes($id, $club);
         if (is_numeric($resp)) {
             $datos['id'] = $resp;
             $mensaje = 'Actualizado';
@@ -108,7 +108,7 @@ function delete() {
     $id = filter_input(INPUT_GET, 'ID', FILTER_SANITIZE_NUMBER_INT);
 
     if (nvl($id, 'NN') != 'NN') {
-        $resp = clientesDB::borraClub($id);
+        $resp = clubesDB::borraClub($id);
         if (is_numeric($resp)) {
             $datos['id'] = $resp;
             $mensaje = 'BORRADO';

@@ -13,30 +13,9 @@ require MODEL_PATH  . 'Token.php';
 require SYSTEM_PATH . 'Router/Router.php';
 require_once 'routes.php';
 
-$response = new Response();
 
 $metodo = filter_input(INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_STRING);
-$SERV = filter_input(INPUT_GET, 'SERV', FILTER_SANITIZE_STRING);
+$serv = filter_input(INPUT_GET, 'SERV', FILTER_SANITIZE_STRING);
 
-if ($SERV === 'validar') {
-    require_once CONTROLLER_PATH . 'validarUsuario.php';
-} else {
-    $acceso = false;
-    // Verificar autenticidad del token
-    $head = getallheaders();
-    $token = $head['token'];
-    $ok = Token::validarToken($token);
+Router::navigate($serv, $metodo);
 
-    if ($ok) {
-        $acceso = true;
-        //require_once CONTROLLER_PATH. 'rutas.php';
-        Router::navigate($SERV, $metodo);
-    } else {
-        $response->setAccess(false);
-        $response->addMessage('Acceso no autorizado');
-        $response->setHttpStatusCode(StatusCodes::HTTP_UNAUTHORIZED);
-        $response->setData('');
-        $response->setToken('');
-        $response->send();
-    }
-}

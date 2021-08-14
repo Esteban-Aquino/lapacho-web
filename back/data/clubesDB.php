@@ -9,7 +9,7 @@
 
 
 
-class clientesDB {
+class clubesDB {
 
     function __construct() {
         

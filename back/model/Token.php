@@ -13,6 +13,18 @@ class Token {
     {
     }
 
+    public static function setToken($token) {
+        self::$_TOKEN = $token;
+    }
+    
+    public static function setUsuario($usuario) {
+        self::$_USUARIO = $usuario;
+    }
+
+    public static function setAccess($access) {
+        self::$_ACCESS = $access;
+    }
+
     public static function getToken() {
         return self::$_TOKEN;
     }
@@ -26,6 +38,12 @@ class Token {
         return self::$_ACCESS;
     }
 
+    public static function clearToken() {
+        self::$_ACCESS = null;
+        self::$_NOMBRE = null;
+        self::$_USUARIO = null;
+        self::$_TOKEN = null;
+    }
 
 
     public static function validarToken($token) {

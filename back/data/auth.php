@@ -17,7 +17,7 @@ class auth {
 
     public static function ValidarUsuario($usuario, $clave) {
         try {
-
+            
             $consulta = "SELECT USUARIO, NOMBRE FROM `USUARIOS` WHERE ACTIVO = 'S' AND USUARIO = :USUARIO AND CLAVE = :CLAVE";
             
             $comando = myconnect::getInstance()->getDb()->prepare($consulta);
