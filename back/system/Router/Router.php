@@ -7,6 +7,7 @@ class Router
     private static $_routes = array();
     const SERVICE_NOT_FOUND = 100;
     const METHOD_NOT_FOUND = 101;
+    const NO_TOKEN_CHECK = FALSE;
 
     /**
      * Agrega un metodo GET para un servicio
@@ -110,12 +111,19 @@ class Router
      */
     public static function navigate($service, $method)
     {
+        $token = [];
+        $route = '';
         $response = new Response();
         $route = self::_searchRoute($service, $method);
         // verificar Token
         $head = getallheaders();
-        $token = $head['token'];
-        $valid = Token::validarToken($token);
+        if (array_key_exists('token',$head)) {
+            $token = $head['token'];
+            $valid = Token::validarToken($token);
+        } else {
+            $valid = false;
+        };
+        
         if (!is_numeric($route)) {
             if (!$route->getCheckToken()) {
                $valid = true;

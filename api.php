@@ -1,7 +1,7 @@
 <?php
 
 
-
+error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 require 'parametros.php';
 require CONFIG_PATH . 'myconnect.php';
 require SHARED_PATH . 'php-jwt-master/src/JWT.php';
